@@ -1,6 +1,4 @@
 package com.bridgelabz;
-
-import UC2.FilesUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -9,13 +7,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.IntStream;
-
 public class NIOFileApiTest {
     private static String HOME = System.getProperty("user.home");
     private static String PLAY_WITH_NIO = "TempPlayGround";
 
     @Test
-    public void givenPathWhenCheckedThenConfirm() throws IOException {
+    public void givenPathWhenCheckedThenConfirm(FileUtils FilesUtils) throws IOException {
 //         Checking if files exists
         Path homePath = Paths.get(HOME);
         Assertions.assertTrue(Files.exists(homePath));
