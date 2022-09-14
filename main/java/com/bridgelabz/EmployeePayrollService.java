@@ -3,17 +3,16 @@ package com.bridgelabz;
 import java.io.IOException;
 import java.util.List;
 
-public class EmployeePayrollService<EmployeePayrollData> {
-    static List<EmployeePayrollService> employList;
-
-    public static EmployeePayrollService createEmployeePayrollService(List<EmployeePayrollService> employList) {
-        return new EmployeePayrollService(employList);
-    }
+public class EmployeePayrollService{
+    static List<EmployePayrollData> employList;
 
     public enum IOServices{
         CONSOLE_IO, FILE_IO
     }
 
+    /**
+     *Default constructor
+     */
     public EmployeePayrollService() {
     }
 
@@ -21,18 +20,17 @@ public class EmployeePayrollService<EmployeePayrollData> {
      * parameterized constructor
      * @param employList
      */
-    private EmployeePayrollService(List<EmployeePayrollData> employList) {
-        this.employList = (List<EmployeePayrollService>) employList;
+    public EmployeePayrollService(List<EmployeePayrollData> employList) {
+        EmployeePayrollService.employList =employList;
     }
     //    create write method to print data back to console
-    public boolean writeEmployPayrollData(IOServices ioServices){
+    public void writeEmployPayrollData(IOServices ioServices){
         PayrollService payrollService = getEmployeePayrollObject(ioServices);
         try {
-            return payrollService.writePayrollData(employList);
+            payrollService.writePayrollData(employList);
         } catch (IOException e) {
             System.out.println("catch block" + e);
         }
-        return false;
     }
     public void readEmployPayrollData(IOServices ioServices) {
         PayrollService payrollService = getEmployeePayrollObject(ioServices);
@@ -54,14 +52,9 @@ public class EmployeePayrollService<EmployeePayrollData> {
     private static PayrollService getEmployeePayrollObject(IOServices ioServices){
         PayrollService payrollService = null;
         if(IOServices.FILE_IO.equals(ioServices))
-            payrollService = (PayrollService) new FileIOPayrollService();
+            payrollService = new FileIOPayrollService();
         else if(IOServices.CONSOLE_IO.equals(ioServices))
-            payrollService = new ConsoleIOPayrollService() {
-                @Override
-                public void readPayrollData() throws IOException {
-
-                }
-            };
+            payrollService = new ConsoleIOPayrollService();
         return payrollService;
     }
 
@@ -73,5 +66,12 @@ public class EmployeePayrollService<EmployeePayrollData> {
         long count= employPayrollService.countEntries(IOServices.CONSOLE_IO);
 //        Show FileIO count no of entries.
         System.out.println(count);
+        FileIOPayrollService fileIOPayrollService = new FileIOPayrollService();
+        try {
+            List<String> list= fileIOPayrollService.readData();
+            System.out.println(list);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
